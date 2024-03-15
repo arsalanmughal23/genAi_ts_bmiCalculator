@@ -16,8 +16,14 @@ let answer:ANSWER_TYPE = {
 async function askValue(variableName:VARIABLE_NAMES_TYPES, message:string){
     let result = await inquirer.prompt({
         name: variableName,
-        type: 'number',
-        message
+        type: 'input',
+        message,
+        default(){
+            return 0;
+        },
+        validate: function(input:any){
+            return isNaN(parseFloat(input)) ? 'You need to enter the number' : true;
+        }
     });
     answer[variableName] = result[variableName];
 }
