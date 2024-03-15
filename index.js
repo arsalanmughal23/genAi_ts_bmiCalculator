@@ -7,8 +7,14 @@ let answer = {
 async function askValue(variableName, message) {
     let result = await inquirer.prompt({
         name: variableName,
-        type: 'number',
-        message
+        type: 'input',
+        message,
+        default() {
+            return 0;
+        },
+        validate: function (input) {
+            return isNaN(parseFloat(input)) ? 'You need to enter the number' : true;
+        }
     });
     answer[variableName] = result[variableName];
 }
