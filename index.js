@@ -9,6 +9,8 @@ let promptAllQuestions = [
 ];
 let result = await inquirer.prompt(promptAllQuestions);
 let { weightInKg, heightInM } = result;
+weightInKg = parseFloat(weightInKg);
+heightInM = parseFloat(heightInM);
 console.log(`Your Weight is: ${weightInKg} Kg`);
 console.log(`Your Height is: ${heightInM} M`);
 let bmi = weightInKg / (heightInM ** 2);
