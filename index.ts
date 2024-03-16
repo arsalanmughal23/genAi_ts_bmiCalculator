@@ -21,6 +21,8 @@ let promptAllQuestions:TYPE_PROMPT[] = [
 let result = await inquirer.prompt(promptAllQuestions);
 
 let {weightInKg, heightInM} = result;
+weightInKg = parseFloat(weightInKg);
+heightInM = parseFloat(heightInM);
 
 console.log(`Your Weight is: ${weightInKg} Kg`);
 console.log(`Your Height is: ${heightInM} M`);
