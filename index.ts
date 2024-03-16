@@ -2,38 +2,29 @@
 
 import inquirer from 'inquirer';
 
-type ANSWER_TYPE = {
-    weightInKg: number,
-    heightInM: number
-}
-type VARIABLE_NAMES_TYPES = 'weightInKg' | 'heightInM';
-
-let answer:ANSWER_TYPE = {
-    weightInKg: 0,
-    heightInM: 0
-};
-
-async function askValue(variableName:VARIABLE_NAMES_TYPES, message:string){
-    let result = await inquirer.prompt({
-        name: variableName,
-        type: 'input',
-        message,
-        default(){
-            return 0;
-        },
-        validate: function(input:any){
-            return isNaN(parseFloat(input)) ? 'You need to enter the number' : true;
-        }
-    });
-    answer[variableName] = result[variableName];
+const validateNumber:Function = function validateNumber(input:any):boolean|string{
+    return isNaN(parseFloat(input)) ? 'You need to enter the number' : true;
 }
 
-await askValue('weightInKg', 'Enter Your Weight in Kilogram (Kg): ');
-await askValue('heightInM', 'Enter Your Height in Meter (M): ');
+type TYPE_PROMPT = {
+    name: 'weightInKg' | 'heightInM',
+    type: 'input',
+    message: string,
+    default: Function,
+    validate: Function
+}
 
-console.log(`Your Weight is: ${answer.weightInKg} Kg`);
-console.log(`Your Height is: ${answer.heightInM} M`);
+let promptAllQuestions:TYPE_PROMPT[] = [
+    { name: 'weightInKg', type: 'input', message: 'Enter Your Weight in Kilogram (Kg): ', default(){ return 0; }, validate:validateNumber },
+    { name: 'heightInM', type: 'input', message: 'Enter Your Height in Meter (M): ', default(){ return 0; }, validate:validateNumber }
+];
+let result = await inquirer.prompt(promptAllQuestions);
 
-let bmi:number = answer.weightInKg / (answer.heightInM ** 2);
+let {weightInKg, heightInM} = result;
+
+console.log(`Your Weight is: ${weightInKg} Kg`);
+console.log(`Your Height is: ${heightInM} M`);
+
+let bmi:number = weightInKg / (heightInM ** 2);
 
 console.log(`Your BMI is: ${bmi}`);
